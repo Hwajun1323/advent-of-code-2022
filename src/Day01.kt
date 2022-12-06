@@ -1,43 +1,21 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        var answer = 0
-        var max = 0
-        var sum = 0
-
-        for (i in input) {
-            if (i.isEmpty()) {
-                if(max < sum){
-                    max = sum
-                }
-                sum = 0
-            } else {
-                sum+=i.toInt()
-            }
-            answer = max
-        }
-        return answer
+    fun caloriesCount(input: List<String>) = input.fold(mutableListOf(0)) { elves, snack ->
+        if (snack.isEmpty()) elves.add(0)
+        else elves[elves.lastIndex] = elves.last() + snack.toInt()
+        elves
     }
 
+    fun caloriesTopElf(input: List<String>) = caloriesCount(input).maxOf { it }
+
+    fun caloriesTopThreeElves(input: List<String>) = caloriesCount(input).sorted().takeLast(3).sum()
+
+    fun part1(input: List<String>): Int {
+        return caloriesTopElf(input)
+    }
 
     fun part2(input: List<String>): Int {
-        var answer = 0
-        var max1 = 0
-        var max2 = 0
-        var max3 = 0
-        var sum = 0
-
-        for (i in input) {
-            if (i.isEmpty()) {
-                if(max < sum){
-                    max = sum
-                }
-                sum = 0
-            } else {
-                sum+=i.toInt()
-            }
-            answer = max
-        }
-        return answer    }
+        return caloriesTopThreeElves(input)
+    }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day01_test")
