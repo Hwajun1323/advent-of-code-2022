@@ -4,7 +4,7 @@ enum class RPS(val value: Int){
     SCISSORS(3),
 }
 
-object Score{
+object WinScore{
     const val WIN = 6
     const val LOOSE = 0
     const val DRAW = 3
@@ -24,6 +24,7 @@ fun main() {
         return input[0].toGameChoice() to input[2].toGameChoice()
     }
 
+    // win case of RPS
     fun RPS.win(opponent: RPS): Boolean =
         when {
             this == RPS.ROCK && opponent == RPS.SCISSORS || this == RPS.PAPER && opponent == RPS.ROCK || this == RPS.SCISSORS && opponent == RPS.PAPER -> true
@@ -32,9 +33,9 @@ fun main() {
 
     fun RPS.scoreAgainst(opponent: RPS) =
         when {
-            this.win(opponent) -> Score.WIN
-            this == opponent -> Score.DRAW
-            else -> Score.LOOSE
+            this.win(opponent) -> WinScore.WIN
+            this == opponent -> WinScore.DRAW
+            else -> WinScore.LOOSE
         }
 
     fun part1(input: List<String>): Int {
@@ -53,7 +54,6 @@ fun main() {
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day02_test")
-//    check(part1(testInput) == 1)
 
     val input = readInput("Day02")
     println(part1(input))
