@@ -1,3 +1,5 @@
+import kotlin.math.min
+
 enum class RPS(val value: Int){
     ROCK(1),
     PAPER(2),
@@ -24,6 +26,41 @@ fun main() {
         return input[0].toGameChoice() to input[2].toGameChoice()
     }
 
+    fun Char.toEndResult() =
+        when(this){
+            'X' -> WinScore.LOOSE
+            'Y' -> WinScore.DRAW
+            else -> WinScore.WIN
+        }
+
+    fun toFigureShape(input: String) : Pair<RPS, Int> {
+        return input[0].toGameChoice() to input[2].toEndResult()
+    }
+
+    fun Int.decideChoice(opponent: RPS) : Int{
+        return when (this) {
+            // loose
+            0 -> when (opponent)
+            {   RPS.ROCK -> 3
+                RPS.PAPER -> 1
+                else -> 2
+            }
+            // draw
+            3 -> when (opponent)
+            {   RPS.ROCK -> 1
+                RPS.PAPER -> 2
+                else -> 3
+            }
+            // win
+            else -> when (opponent)
+            {
+                RPS.ROCK -> 2
+                RPS.PAPER -> 3
+                else -> 1
+            }
+        }
+    }
+
     // win case of RPS
     fun RPS.win(opponent: RPS): Boolean =
         when {
@@ -31,7 +68,7 @@ fun main() {
             else -> false
         }
 
-    fun RPS.scoreAgainst(opponent: RPS) =
+    fun RPS.getScore(opponent: RPS) =
         when {
             this.win(opponent) -> WinScore.WIN
             this == opponent -> WinScore.DRAW
@@ -43,19 +80,25 @@ fun main() {
             if (it.isBlank()) 0
             else {
                 val (opponent, mine) = toGameChoice(it)
-                mine.scoreAgainst(opponent) + mine.value
+                mine.getScore(opponent) + mine.value
             }
         }
     }
 
-//    fun part2(input: List<String>): Int {
-//        return input.size
-//    }
+    fun part2(input: List<String>): Int {
+        return input.sumOf {
+            if(it.isBlank()) 0
+            else {
+                val (opponent, mine) = toFigureShape(it)
+                mine.decideChoice(opponent) + mine
+            }
+        }
+    }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day02_test")
 
     val input = readInput("Day02")
     println(part1(input))
-//    println(part2(input))
+    println(part2(input))
 }
