@@ -11,7 +11,6 @@ fun main() {
         val firstElf = groupItem[0]
         val secondElf = groupItem[1]
         val thirdElf = groupItem[2]
-
         return firstElf.filter { c -> secondElf.contains(c) && thirdElf.contains(c) }.toSet().joinToString()
     }
 
